@@ -1,7 +1,10 @@
+import cz.bonoman.plants.Catalogue;
 import cz.bonoman.plants.Plants;
 
+import java.util.Calendar;
+
 public class Main {
-    private Plants plants = new Plants();
+    private Catalogue catalogue = new Catalogue();
 
     public static void main(String[] args){
 
