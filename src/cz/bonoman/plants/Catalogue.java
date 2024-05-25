@@ -1,8 +1,9 @@
 package cz.bonoman.plants;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Catalogue {
     private ArrayList<Plants> plantsList;
@@ -15,13 +16,13 @@ public class Catalogue {
 
     public void generateCatalogue() throws PlantException {
         if(this.dataHandler.isDataStorageAvailable()) {
-            System.out.println("Loading plants catalogue from storage.");
+            System.out.println("\nData storage available.\nLoading plants catalogue from storage.");
             this.plantsList = new ArrayList<Plants>(dataHandler.loadPlantsFromStorage());
             this.fillPlantsList();
             this.removeFromPlantsList(2);
             this.dataHandler.savePlantsToStorage(this.plantsList);
         }else{
-            System.out.println("Generating new plants catalogue.");
+            System.out.println("\nData storage not available.\nGenerating new plants catalogue.");
             this.fillPlantsList();
         }
     }
@@ -41,31 +42,26 @@ public class Catalogue {
         }
     }
 
-    public String printCatalogue(ArrayList<Plants> inputList){
+    public String getWateringInfo(){
         StringBuilder stringBuilder = new StringBuilder();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        for(Plants plant : inputList){
-            stringBuilder.append("ID ").append(plant.getId());
-            stringBuilder.append(": ").append(plant.getName());
-            stringBuilder.append(" - ").append(plant.getNotes());
-            stringBuilder.append(" Planted: ").append(plant.getPlanted().format(dateTimeFormatter));
-            stringBuilder.append(", Watering: ").append(plant.getWatering().format(dateTimeFormatter));
+        for(Plants plant : this.getPlantsList()){
+            stringBuilder.append(plant.getWateringInfo());
             stringBuilder.append("\n");
         }
         return stringBuilder.toString();
     }
 
-    public String getWateringInfo(){
-        StringBuilder stringBuilder = new StringBuilder();
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d.M.yyyy");
-        for(Plants plant : this.getPlantsList()){
-            stringBuilder.append("Name: ").append(plant.getName());
-            stringBuilder.append(", Watering: ").append(plant.getWatering().format(dateTimeFormatter));
-            LocalDate nextRecommendedWatering = plant.getWatering().plusDays(plant.getFrequencyOfWatering());
-            stringBuilder.append(", Next recommended watering: ").append(nextRecommendedWatering.format(dateTimeFormatter));
-            stringBuilder.append("\n");
+    public void sortCatalogue(String sortBy){
+        switch(sortBy) {
+            case "name":        this.plantsList.sort(Comparator.comparing(Plants::getName));
+                                break;
+            case "watering":    this.plantsList.sort(Comparator.comparing(Plants::getWatering));
+                                break;
+            case "planted":     this.plantsList.sort(Comparator.comparing(Plants::getPlanted));
+                                break;
+            default:            this.plantsList.sort(Comparator.comparing(Plants::getId));
+                                break;
         }
-        return stringBuilder.toString();
     }
 
     public void removeFromPlantsList(int index){

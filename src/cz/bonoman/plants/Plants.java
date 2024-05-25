@@ -40,7 +40,7 @@ public class Plants {
     public String getWateringInfo(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.yyyy");
         LocalDate nextWatering = watering.plusDays(this.frequencyOfWatering);
-        return(this.name + ", " + this.watering.format(formatter) + ", " + nextWatering.format(formatter));
+        return("Name: " + this.name + ", Watering: " + this.watering.format(formatter) + ", Next recommended watering: " + nextWatering.format(formatter));
     }
 
     public int getFrequencyOfWatering() {return frequencyOfWatering;}
