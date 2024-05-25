@@ -1,14 +1,17 @@
 import cz.bonoman.plants.Catalogue;
-import cz.bonoman.plants.Plants;
-
-import java.util.Calendar;
+import cz.bonoman.plants.PlantException;
 
 public class Main {
-    private Catalogue catalogue = new Catalogue();
+
+    private static final Catalogue catalogue = new Catalogue();
 
     public static void main(String[] args){
-
-        System.out.println("Print from main (Plants)");
-
+        try{
+            catalogue.generateCatalogue();
+            System.out.println("\n### WATERING PLAN:\n" + catalogue.getWateringInfo());
+        }catch(PlantException ex){
+            System.out.println(ex.getMessage());
+        }
     }
+
 }

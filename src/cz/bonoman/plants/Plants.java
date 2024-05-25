@@ -9,20 +9,19 @@ public class Plants {
     private int id, frequencyOfWatering;
     private static int nextId = 0;
 
-    public Plants(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) throws PlantException{
+    public Plants(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) throws PlantException {
+        if(frequencyOfWatering < 1){
+            throw new PlantException("Plants: (" + name + ") Watering frequency can't be lower than once per day.");
+        }
+        this.frequencyOfWatering = frequencyOfWatering;
+        if(watering.isBefore(planted)){
+            throw new PlantException("Plants: (" + name + ") Watering date can't be older than planting date.");
+        }
+        this.watering = watering;
         this.name = name;
         this.notes = notes;
         this.planted = planted;
         this.id = nextId++;
-
-        if(frequencyOfWatering < 1){
-            throw new PlantException("Watering frequency can't be lower than once per day.");
-        }
-        this.frequencyOfWatering = frequencyOfWatering;
-        if(watering.isBefore(planted)){
-            throw new PlantException("Watering date can't be older than planting date.");
-        }
-        this.watering = watering;
     }
 
     public Plants(){
