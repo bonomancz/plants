@@ -36,8 +36,9 @@ public class Catalogue {
     public void addToPlantsList(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) throws PlantException {
         try {
             this.plantsList.add(new Plant(name, notes, planted, watering, frequencyOfWatering));
-        }catch(PlantException ex){
-            System.out.println(ex.getMessage());
+        }catch(PlantException e){
+            System.err.println(e.getMessage());
+            throw new PlantException("addToPlantsList(): " + e.getMessage());
         }
     }
 
