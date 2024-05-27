@@ -2,11 +2,10 @@ package cz.bonoman.plants;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class Catalogue {
-    private ArrayList<Plants> plantsList;
+    private ArrayList<Plant> plantsList;
     private DataHandler dataHandler;
 
     public Catalogue(){
@@ -17,7 +16,7 @@ public class Catalogue {
     public void generateCatalogue() throws PlantException {
         if(this.dataHandler.isDataStorageAvailable()) {
             System.out.println("\nData storage available.\nLoading plants catalogue from storage.");
-            this.plantsList = new ArrayList<Plants>(dataHandler.loadPlantsFromStorage());
+            this.plantsList = new ArrayList<Plant>(dataHandler.loadPlantsFromStorage());
             this.fillPlantsList();
             this.removeFromPlantsList(2);
             this.dataHandler.savePlantsToStorage(this.plantsList);
@@ -36,7 +35,7 @@ public class Catalogue {
 
     public void addToPlantsList(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) throws PlantException {
         try {
-            this.plantsList.add(new Plants(name, notes, planted, watering, frequencyOfWatering));
+            this.plantsList.add(new Plant(name, notes, planted, watering, frequencyOfWatering));
         }catch(PlantException ex){
             System.out.println(ex.getMessage());
         }
@@ -44,7 +43,7 @@ public class Catalogue {
 
     public String getWateringInfo(){
         StringBuilder stringBuilder = new StringBuilder();
-        for(Plants plant : this.getPlantsList()){
+        for(Plant plant : this.getPlantsList()){
             stringBuilder.append(plant.getWateringInfo());
             stringBuilder.append("\n");
         }
@@ -53,25 +52,29 @@ public class Catalogue {
 
     public void sortCatalogue(String sortBy){
         switch(sortBy) {
-            case "name":        this.plantsList.sort(Comparator.comparing(Plants::getName));
+            case "name":        this.plantsList.sort(Comparator.comparing(Plant::getName));
                                 break;
-            case "watering":    this.plantsList.sort(Comparator.comparing(Plants::getWatering));
+            case "watering":    this.plantsList.sort(Comparator.comparing(Plant::getWatering));
                                 break;
-            case "planted":     this.plantsList.sort(Comparator.comparing(Plants::getPlanted));
+            case "planted":     this.plantsList.sort(Comparator.comparing(Plant::getPlanted));
                                 break;
-            default:            this.plantsList.sort(Comparator.comparing(Plants::getId));
+            default:            this.plantsList.sort(Comparator.comparing(Plant::getId));
                                 break;
         }
+    }
+
+    public void waterPlant(int index){
+        this.plantsList.get(index).setWatering(LocalDate.now());
     }
 
     public void removeFromPlantsList(int index){
         this.plantsList.remove(index);
     }
 
-    public Plants getPlantFromList(int index){
+    public Plant getPlantFromList(int index){
        return this.plantsList.get(index);
     }
 
-    public ArrayList<Plants> getPlantsList() {return this.plantsList;}
+    public ArrayList<Plant> getPlantsList() {return this.plantsList;}
 
 }

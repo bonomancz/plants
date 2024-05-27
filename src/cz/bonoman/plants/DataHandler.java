@@ -18,8 +18,8 @@ public class DataHandler {
         this.outputFile = new File(outputTxtFile);
     }
 
-    public ArrayList<Plants> loadPlantsFromStorage() throws PlantException {
-        ArrayList<Plants> plants = new ArrayList<>();
+    public ArrayList<Plant> loadPlantsFromStorage() throws PlantException {
+        ArrayList<Plant> plants = new ArrayList<>();
         if(this.isReadable(this.sourceFile)){
             for(String record : this.fileRead(this.sourceFile)){
                 try {
@@ -30,7 +30,7 @@ public class DataHandler {
                         int frequencyOfWatering = Integer.parseInt(splPart[2].trim());
                         LocalDate watering = LocalDate.parse(splPart[3].trim());
                         LocalDate planted = LocalDate.parse(splPart[4].trim());
-                        plants.add(new Plants(name, notes, planted, watering, frequencyOfWatering));
+                        plants.add(new Plant(name, notes, planted, watering, frequencyOfWatering));
                     }
                 }catch(PlantException ex){
                     System.out.println(ex.getMessage());
@@ -58,11 +58,11 @@ public class DataHandler {
         }
     }
 
-    public void savePlantsToStorage(List<Plants> inputList) throws RuntimeException{
+    public void savePlantsToStorage(List<Plant> inputList) throws RuntimeException{
         this.prepareDataStorage();
         if(this.isWriteable(this.outputFile)){
             ArrayList<String> writeList = new ArrayList<>();
-            for(Plants plant : inputList){
+            for(Plant plant : inputList){
                 writeList.add(plant.getName() + "\t" + plant.getNotes() + "\t" + plant.getFrequencyOfWatering() + "\t" + plant.getWatering() + "\t" + plant.getPlanted());
             }
             fileWrite(this.outputFile, writeList);

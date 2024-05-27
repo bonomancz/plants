@@ -3,13 +3,13 @@ package cz.bonoman.plants;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Plants {
+public class Plant {
     private String name, notes;
     private LocalDate planted, watering;
     private int id, frequencyOfWatering;
     private static int nextId = 0;
 
-    public Plants(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) throws PlantException {
+    public Plant(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) throws PlantException {
         if(frequencyOfWatering < 1){
             throw new PlantException("Plants: (" + name + ") Watering frequency can't be lower than once per day.");
         }
@@ -24,12 +24,12 @@ public class Plants {
         this.id = nextId++;
     }
 
-    public Plants(){
+    public Plant(){
         this.notes = "";
         this.watering = LocalDate.now();
     }
 
-    public Plants(String name){
+    public Plant(String name){
         this.name = name;
         this.notes = "";
         this.watering = LocalDate.now();
@@ -44,9 +44,13 @@ public class Plants {
     }
 
     public int getFrequencyOfWatering() {return frequencyOfWatering;}
+    public void setFrequencyOfWatering(int input){this.frequencyOfWatering = input;}
     public String getName() {return name;}
+    public void setName(String input){ this.name = input;}
     public String getNotes() {return notes;}
+    public void setNotes(String input){this.notes = input;}
     public LocalDate getPlanted() {return planted;}
     public LocalDate getWatering() {return watering;}
+    public void setWatering(LocalDate input){this.watering = input;}
     public int getId() {return id;}
 }
