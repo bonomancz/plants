@@ -1,5 +1,6 @@
 package cz.bonoman.plants;
 
+import java.rmi.server.ExportException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -27,18 +28,18 @@ public class Catalogue {
     }
 
     public void fillPlantsList() throws PlantException{
-        this.addToPlantsList("Šplhavnice zlatá", "Někdy se nazývá Potos.", LocalDate.of(2024, 5, 24), LocalDate.of(2024, 5, 24), 2);
-        this.addToPlantsList("Diefenbachie", "Jedovatá rostlina.", LocalDate.of(2024, 5, 3), LocalDate.of(2024, 5, 4), 2);
-        //this.addToPlantsList("Fíkus", "Fíkovník", LocalDate.of(2024, 5, 18), LocalDate.of(2024, 5, 19), 1);
-        //this.addToPlantsList("Kulkas Zamiolistý", "Po požití je mírně toxická.", LocalDate.of(2024, 5, 10), LocalDate.of(2024, 5, 10), 1);
+            this.addToPlantsList("Šplhavnice zlatá", "Někdy se nazývá Potos.", LocalDate.of(2024, 5, 24), LocalDate.of(2024, 5, 24), 2);
+            this.addToPlantsList("Diefenbachie", "Jedovatá rostlina.", LocalDate.of(2024, 5, 3), LocalDate.of(2024, 5, 4), 2);
+            //this.addToPlantsList("Fíkus", "Fíkovník", LocalDate.of(2024, 5, 18), LocalDate.of(2024, 5, 19), 1);
+            //this.addToPlantsList("Kulkas Zamiolistý", "Po požití je mírně toxická.", LocalDate.of(2024, 5, 10), LocalDate.of(2024, 5, 10), 1);
     }
 
     public void addToPlantsList(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) throws PlantException {
         try {
             this.plantsList.add(new Plant(name, notes, planted, watering, frequencyOfWatering));
-        }catch(PlantException e){
-            System.err.println(e.getMessage());
-            throw new PlantException("addToPlantsList(): " + e.getMessage());
+        }catch (PlantException e){
+            System.err.println("Catalogue - addToPlantsList(): " + e.getMessage());
+            //throw new PlantException("addToPlantsList(): " + e.getMessage());
         }
     }
 
@@ -65,7 +66,11 @@ public class Catalogue {
     }
 
     public void waterPlant(int index){
-        this.plantsList.get(index).setWatering(LocalDate.now());
+        try {
+            this.plantsList.get(index).setWatering(LocalDate.now());
+        }catch (Exception e){
+            System.err.println("waterPlant(): " + e.getMessage());
+        }
     }
 
     public void removeFromPlantsList(int index){

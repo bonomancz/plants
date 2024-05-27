@@ -15,7 +15,7 @@ public class Main {
             report += "\nWatering plan (sorted by watering):\n" + catalogue.getWateringInfo();
             System.out.println(report);
         }catch(PlantException e){
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 

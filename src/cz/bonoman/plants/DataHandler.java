@@ -33,8 +33,8 @@ public class DataHandler {
                             LocalDate planted = LocalDate.parse(splPart[4].trim());
                             plants.add(new Plant(name, notes, planted, watering, frequencyOfWatering));
                         }
-                    } catch (PlantException ex) {
-                        System.out.println(ex.getMessage());
+                    } catch (PlantException e) {
+                        System.err.println(e.getMessage());
                     }
                 }
             }
