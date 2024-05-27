@@ -127,16 +127,16 @@ public class DataHandler {
     }
 
     public List<String> fileRead(File file){
-        ArrayList<String> StringList = new ArrayList<>();
+        ArrayList<String> stringList = new ArrayList<>();
         try(BufferedReader reader = new BufferedReader(new FileReader(file))){
             String line;
             while((line = reader.readLine()) != null){
-                StringList.add(line);
+                stringList.add(line);
             }
         }catch(IOException e){
             e.getMessage();
         }
-        return StringList;
+        return stringList;
     }
 
     private void fileCreate(File file){
